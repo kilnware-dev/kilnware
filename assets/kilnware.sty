@@ -1,0 +1,93 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{kilnware}[2026/11/24 Kilnware document style]
+
+
+\usepackage[
+    a4paper,
+    left=1.5cm,
+    right=1.5cm,
+    top=1.5cm,
+    bottom=1.5cm
+]{geometry}
+
+\RequirePackage{eqparbox}
+
+% Paragraph formatting
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25em}
+
+% Counters
+\newcounter{stdpara}
+\counterwithin*{stdpara}{section}
+\counterwithin*{stdpara}{subsection}
+\counterwithin*{stdpara}{subsubsection}
+
+\newcounter{stdsubpara}[stdpara]
+\renewcommand{\thestdsubpara}{\thestdpara.\arabic{stdsubpara}}
+
+% ==============================================================================
+% Configurable Settings
+% ==============================================================================
+
+
+\newlength{\marginnumsep}
+\setlength{\marginnumsep}{12pt}       % distance of numbers into left margin
+
+\newlength{\subparadashindent}
+\setlength{\subparadashindent}{1em}   % how far in the em-dash starts
+
+\newlength{\subparadashsep}
+\setlength{\subparadashsep}{0.8em}    % gap between em-dash and text
+
+% Labeled paragraph settings (\para[Label] and \subpara[Label]):
+\newcommand{\paralabelpunct}{:}        % separator character (e.g., :, --, ->)
+\newlength{\paralabelpresep}
+\setlength{\paralabelpresep}{0.4em}   % minimum space between longest label and separator
+\newlength{\paralabelpostsep}
+\setlength{\paralabelpostsep}{0.6em}  % space between separator and description text
+
+% ==============================================================================
+% Internal Helpers & Commands
+% ==============================================================================
+
+\newcommand{\crucible}{\href{https://github.com/kilnware-dev/Crucible}{Crucible}}
+\newcommand{\rutile}{\href{https://github.com/kilnware-dev/Rutile}{Rutile}}
+\newcommand{\cinnabar}{\href{https://github.com/kilnware-dev/Cinnabar}{Cinnabar}}
+\newcommand{\kilnware}{\hrev{https://github.com/kilnware-dev/}}
+
+
+\newcounter{paralabelgroup}
+\newlength{\subparadashwidth}
+\AtBeginDocument{\settowidth{\subparadashwidth}{---}}
+
+\NewDocumentCommand{\para}{ o }{%
+  \par\vspace{0.25em}\noindent
+  \refstepcounter{stdpara}%
+  \makebox[0pt][r]{\raisebox{0.35ex}{\scriptsize\thestdpara}\hspace{\marginnumsep}}%
+  \IfValueTF{#1}{%
+    \eqmakebox[plg-\theparalabelgroup][l]{#1\hspace{\paralabelpresep}\hfill\paralabelpunct}%
+    \hspace{\paralabelpostsep}%
+    \hangindent=\dimexpr\eqboxwidth{plg-\theparalabelgroup} + \paralabelpostsep\relax
+    \hangafter=1
+  }{%
+    \stepcounter{paralabelgroup}%
+  }%
+  \ignorespaces
+}
+
+\NewDocumentCommand{\subpara}{ o }{
+  \par\vspace{0.1em}\noindent
+  \refstepcounter{stdsubpara}
+  \makebox[0pt][r]{\footnotesize(\thestdsubpara)\hspace{\marginnumsep}}
+  \hspace*{\subparadashindent}---\hspace{\subparadashsep}
+  \IfValueTF{#1}{
+    \eqmakebox[plg-\theparalabelgroup][l]{#1\hspace{\paralabelpresep}\hfill\paralabelpunct}
+    \hspace{\paralabelpostsep}
+    \hangindent=\dimexpr\subparadashindent + \subparadashwidth + \subparadashsep + \eqboxwidth{plg-\theparalabelgroup} + \paralabelpostsep\relax
+    \hangafter=1
+  }{
+    \hangindent=\dimexpr\subparadashindent + \subparadashwidth + \subparadashsep\relax
+    \hangafter=1
+  }
+  \ignorespaces
+}

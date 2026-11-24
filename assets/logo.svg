@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260">
+	<defs>
+		<linearGradient id="kiln-heat" x1="30%" y1="100%" x2="70%" y2="0%">
+			<stop offset="0%" stop-color="#E61919" />
+			<stop offset="50%" stop-color="#FF6B00" />
+			<stop offset="100%" stop-color="#FFD500" />
+		</linearGradient>
+	</defs>
+
+	<!-- Left Curly Brace { -->
+	<path
+	  fill="none"
+	  stroke="#000000"
+	  stroke-width="10"
+	  stroke-linecap="round"
+	  stroke-linejoin="round"
+	  d="M 70 20
+       Q 40 20 40 70
+       Q 40 130 20 130
+       Q 40 130 40 190
+       Q 40 240 70 240"
+  />
+
+	<!-- Pinwheel Cross -->
+	<path
+	  fill="url(#kiln-heat)"
+	  stroke="#000000"
+	  stroke-width="10"
+	  stroke-linejoin="round"
+	  d="M 170 20 A 60 60 0 0 1 230 80 L 230 100 L 310 100 A 60 60 0 0 1 250 160 L 230 160 L 230 240 A 60 60 0 0 1 170 180 L 170 160 L 90 160 A 60 60 0 0 1 150 100 L 170 100 Z"
+  />
+
+	<!-- Right Curly Brace } -->
+	<path
+	  fill="none"
+	  stroke="#000000"
+	  stroke-width="10"
+	  stroke-linecap="round"
+	  stroke-linejoin="round"
+	  d="M 330 20
+       Q 360 20 360 70
+       Q 360 130 380 130
+       Q 360 130 360 190
+       Q 360 240 330 240"
+  />
+</svg>
