@@ -1,14 +1,10 @@
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{kilnware}[2026/11/24 Kilnware document style]
+\ProvidesPackage{kilnware}[Kilnware]
 
-% ==============================================================================
-% Dependencies
-% ==============================================================================
 
 \RequirePackage{geometry}
 \RequirePackage{titlesec}
-\RequirePackage{eqparbox}
 \RequirePackage{chngcntr}
 \RequirePackage{hyperref}
 \RequirePackage{xparse}
@@ -16,41 +12,8 @@
 \RequirePackage{amsmath}
 \RequirePackage{xcolor}
 \RequirePackage{array}
-
-
-% ==============================================================================
-% Heading Numbering
-% ==============================================================================
-
-\setcounter{secnumdepth}{3}
-
-\renewcommand{\thesection}{%
-    \thechapter.\arabic{section}%
-}
-
-\renewcommand{\thesubsection}{%
-    \thesection.\arabic{subsection}%
-}
-
-\renewcommand{\thesubsubsection}{%
-    \thesubsection.\arabic{subsubsection}%
-}
-
-% ==============================================================================
-% Table of Contents Alignment
-% ==============================================================================
-
-\newlength{\tocnumwidth}
-\setlength{\tocnumwidth}{2.5em}
-
-\cftsetindents{chapter}{-\tocnumwidth}{\tocnumwidth}
-\cftsetindents{section}{-1em}{\tocnumwidth}
-\cftsetindents{subsection}{0.5em}{\tocnumwidth}
-\cftsetindents{subsubsection}{2em}{\tocnumwidth}
-
-% ==============================================================================
-% Page Layout
-% ==============================================================================
+\RequirePackage{eqparbox}
+\RequirePackage[T1]{fontenc}
 
 \geometry{
     a4paper,
@@ -60,12 +23,23 @@
     bottom=1.5cm
 }
 
+\newcommand{\ebnfdef}[2]{\par\noindent\textbf{#1}\ =\ #2;}
+\newcommand{\ebnfterm}[1]{\texttt{#1}}
+\newcommand{\ebnfstr}[1]{\texttt{"#1"}}
+\newcommand{\ebnfstrsingle}[1]{\texttt{'#1'}}
+\newcommand{\ebnfid}[1]{\textit{#1}}
+
 % ==============================================================================
-% Paragraph Typography
+% Project Links
 % ==============================================================================
 
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.25em}
+\newcommand{\crucible}{\href{https://github.com/kilnware-dev/Crucible}{Crucible}}
+
+\newcommand{\rutile}{\href{https://github.com/kilnware-dev/Rutile}{Rutile}}
+
+\newcommand{\cinnabar}{\href{https://github.com/kilnware-dev/Cinnabar}{Cinnabar}}
+
+\newcommand{\kilnware}{\href{https://github.com/kilnware-dev/}{Kilnware}}
 
 % ==============================================================================
 % Configurable Settings
@@ -95,23 +69,6 @@
 \newlength{\paralabelpostsep}
 \setlength{\paralabelpostsep}{0.6em}
 
-% ==============================================================================
-% Paragraph Counters
-% ==============================================================================
-
-% Paragraph counter resets at each subsection.
-\newcounter{stdpara}[subsection]
-
-% Subparagraph counter resets at each paragraph.
-\newcounter{stdsubpara}[stdpara]
-
-% Paragraph.subparagraph numbering
-\renewcommand{\thestdsubpara}{%
-    \arabic{stdpara}.\arabic{stdsubpara}%
-}
-
-% Labeled paragraph group counter
-\newcounter{paralabelgroup}
 
 % ==============================================================================
 % Heading Spacing
@@ -158,8 +115,21 @@
 \makeatother
 
 % ==============================================================================
-% Standard Paragraph
+% Paragraph and Subparagraph
 % ==============================================================================
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25em}
+
+\newcounter{stdpara}[subsection]
+
+\newcounter{stdsubpara}[stdpara]
+
+\renewcommand{\thestdsubpara}{\arabic{stdpara}.\arabic{stdsubpara}}
+
+\newcounter{paralabelgroup}
+
+
 
 \NewDocumentCommand{\para}{o}{%
     \par\vspace{0.25em}%
@@ -188,9 +158,6 @@
     \ignorespaces
 }
 
-% ==============================================================================
-% Standard Subparagraph
-% ==============================================================================
 
 \NewDocumentCommand{\subpara}{o}{%
     \par\vspace{0.1em}%
@@ -228,117 +195,6 @@
 }
 
 
-
-% Nonterminal: italic text with clean hyphen breaks
-\newcommand{\nt}[1]{\textit{#1}}
-
-% Terminal: monospace token/keyword/symbol
-\newcommand{\term}[1]{\texttt{#1}}
-
-% Optional marker
-\newcommand{\opt}{_{\mathrm{opt}}}
-
-% Grammar block environment
-\newenvironment{cgrammar}{%
-  \begin{quote}\small\begin{tabular}{@{}r@{\quad:\quad}l@{}}%
-}{%
-  \end{tabular}\end{quote}%
-}
-% ==============================================================================
-% Project Links
-% ==============================================================================
-
-\newcommand{\crucible}{\href{https://github.com/kilnware-dev/Crucible}{Crucible}}
-
-\newcommand{\rutile}{\href{https://github.com/kilnware-dev/Rutile}{Rutile}}
-
-\newcommand{\cinnabar}{\href{https://github.com/kilnware-dev/Cinnabar}{Cinnabar}}
-
-\newcommand{\kilnware}{\href{https://github.com/kilnware-dev/}{Kilnware}}
-
 % ==============================================================================
 % Environments
 % ==============================================================================
-
-\newenvironment{termlist}
-{
-    \begin{list}{}{
-        \setlength{\leftmargin}{0em}
-        \setlength{\parsep}{0em}
-        \setlength{\itemsep}{-0.5em}
-        \setlength{\topsep}{0em}
-    }
-}
-{
-    \end{list}
-}
-
-
-
-% ==========================================
-% EBNF Grammar Notation
-% ==========================================
-
-\usepackage{xcolor}
-\usepackage{array}
-
-% --- Colors ---
-\definecolor{ebnf-nonterminal}{RGB}{55,75,110}
-\definecolor{ebnf-terminal}{RGB}{45,45,45}
-
-% --- Symbols ---
-
-% Nonterminal: <expression>
-\newcommand{\ebnfNonterm}[1]{%
-  \ensuremath{\langle\text{\textit{#1}}\rangle}%
-}
-
-% Terminal: +
-\newcommand{\ebnfTerm}[1]{%
-  \ensuremath{\text{\textcolor{ebnf-terminal}{#1}}}%
-}
-
-% String literal: "hello"
-\newcommand{\ebnfString}[1]{%
-  \texttt{``#1''}%
-}
-
-% Token: IDENTIFIER
-\newcommand{\ebnfToken}[1]{%
-  \textsc{#1}%
-}
-
-% --- Operators ---
-
-\newcommand{\ebnfAlt}{\ensuremath{\mid}}
-\newcommand{\ebnfOptional}[1]{\ensuremath{[#1]}}
-\newcommand{\ebnfRepeat}[1]{\ensuremath{\{#1\}}}
-\newcommand{\ebnfGroup}[1]{\ensuremath{(#1)}}
-\newcommand{\ebnfEmpty}{\ensuremath{\varepsilon}}
-\newcommand{\ebnfProduces}{\ensuremath{::=}}
-
-% --- Environment ---
-
-\newenvironment{ebnf}{%
-  \begin{quote}
-  \small
-  \renewcommand{\arraystretch}{1.35}
-  \begin{tabular}{
-    @{}>{\raggedleft\arraybackslash}p{0.28\linewidth}
-    @{\quad}c@{\quad}
-    >{\raggedright\arraybackslash}p{0.58\linewidth}@{}
-  }
-}{%
-  \end{tabular}
-  \end{quote}
-}
-
-% --- Production definition ---
-
-\newcommand{\ebnfProduction}[2]{%
-  \ebnfNonterm{#1} & \ebnfProduces & #2
-}
-
-\newcommand{\ebnfAlternative}{%
-  \\ & \ebnfAlt &
-}
